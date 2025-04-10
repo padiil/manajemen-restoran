@@ -1,0 +1,29 @@
+# Global ignores
+node_modules/
+dist/
+.env
+.env.*.local
+.DS_Store
+*.log
+*.swp
+
+# Frontend (React + Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.eslintcache
+frontend/coverage/
+
+# Backend (NestJS)
+backend/node_modules/
+backend/dist/
+backend/coverage/
+backend/.eslintcache
+
+# Prisma
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+backend/prisma/.env
+
+# VSCode
+.vscode/
