@@ -11,4 +11,20 @@ export class UpdateKaryawanDto {
     message: `jabatan must be one of the following values: ${Object.values(Jabatan).join(', ')}`,
   })
   jabatan?: Jabatan;
+
+  @IsOptional()
+  @IsString()
+  email?: string;
+
+  @IsOptional()
+  @IsString()
+  password?: string;
+
+  @IsOptional()
+  @IsString()
+  aktif?: boolean;
+
+  @IsOptional()
+  @IsString()
+  clockedOutAt?: Date;
 }

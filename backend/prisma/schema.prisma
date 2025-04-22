@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,16 +14,139 @@ enum Jabatan {
   WAITER
 }
 
+enum StatusPesanan {
+  DIBUAT
+  DIMASAK
+  SELESAI
+  DIBAYAR
+}
+
 model Karyawan {
-  id         Int       @id @default(autoincrement())
-  nama       String
-  jabatan    Jabatan
-  email      String    @unique
-  password   String
-  aktif      Boolean   @default(true)
+  id           Int       @id @default(autoincrement())
+  nama         String
+  jabatan      Jabatan
+  email        String    @unique
+  password     String
+  aktif        Boolean   @default(true)
   clockedInAt  DateTime  @default(now())
   clockedOutAt DateTime?
+  waiterOrders Pesanan[] @relation("WaiterOrders")
+  kokiOrders   Pesanan[] @relation("KokiOrders")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("karyawan")
+}
+
+model Produk {
+  id        String      @id @default(uuid())
+  nama      String
+  deskripsi String?
+  harga     Float
+  OrderItem OrderItem[]
+  Resep     Resep[] // Relasi ke resep produk
+
+  @@map("produk")
+}
+
+model StokBahan {
+  id                Int                 @id @default(autoincrement())
+  namaBahan         String              @unique
+  jumlah            Int
+  satuan            String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  SnapshotStokBahan SnapshotStokBahan[]
+  Resep             Resep[] // Relasi bahan digunakan dalam resep
+
+  @@map("stok_bahan")
+}
+
+model Pengeluaran {
+  id        String   @id @default(uuid())
+  tanggal   DateTime @default(now())
+  deskripsi String?
+  jumlah    Float
+
+  @@map("pengeluaran")
+}
+
+model Resep {
+  id          String    @id @default(uuid())
+  idProduk    String
+  produk      Produk    @relation(fields: [idProduk], references: [id], onDelete: Cascade)
+  idBahan     Int
+  bahan       StokBahan @relation(fields: [idBahan], references: [id], onDelete: Cascade)
+  kuantitas   Float // Jumlah bahan yang dibutuhkan
+  satuanPakai String // Satuan bahan yang digunakan dalam resep (mungkin berbeda dengan satuan stok)
+
+  @@unique([idProduk, idBahan]) // Satu produk hanya bisa memiliki satu resep untuk bahan yang sama
+  @@map("resep")
+}
+
+model SnapshotStokBahan {
+  id      Int      @id @default(autoincrement())
+  idStok  Int
+  tanggal DateTime
+  jumlah  Int
+
+  stok StokBahan @relation(fields: [idStok], references: [id])
+
+  @@map("snapshot_stok_bahan")
+}
+
+model Pesanan {
+  id         String        @id @default(uuid())
+  waiterId   Int
+  waiter     Karyawan      @relation("WaiterOrders", fields: [waiterId], references: [id])
+  kokiId     Int?
+  koki       Karyawan?     @relation("KokiOrders", fields: [kokiId], references: [id])
+  totalHarga Float         @default(0)
+  status     StatusPesanan @default(DIBUAT)
+  createdAt  DateTime      @default(now())
+  Pembayaran Pembayaran[]
+  OrderItem  OrderItem[]
+
+  @@map("pesanan")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  orderId     String
+  order       Pesanan @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Produk  @relation(fields: [productId], references: [id])
+  quantity    Int
+  hargaSatuan Float
+
+  @@map("order_item")
+}
+
+model Pembayaran {
+  id        String   @id @default(uuid())
+  orderId   String   @unique
+  pesanan   Pesanan  @relation(fields: [orderId], references: [id])
+  metode    String
+  jumlah    Float
+  createdAt DateTime @default(now())
+
+  @@map("pembayaran")
+}
+
+model LaporanKeuangan {
+  id              String   @id @default(uuid())
+  totalPendapatan Float
+  tanggal         DateTime @default(now())
+
+  @@map("laporan_keuangan")
+}
+
+model LaporanTransaksi {
+  id              String   @id @default(uuid())
+  totalTransaksi  Int
+  totalPendapatan Float
+  tanggal         DateTime @default(now())
+
+  @@map("laporan_transaksi")
 }
