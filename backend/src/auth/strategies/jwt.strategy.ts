@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
@@ -18,11 +18,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: any) {
+        // Cari user berdasarkan ID dari payload JWT
         const user = await this.karyawanService.findOne(payload.sub); // Menggunakan findOne
         if (!user) {
-            return null;
+            throw new UnauthorizedException('User not found');
         }
+
+        // Kembalikan data user tanpa password
         const { password, ...result } = user;
-        return result; // Request akan memiliki `req.user` yang berisi info user tanpa password
+        return result; // `req.user` akan berisi data user, termasuk `jabatan`
     }
 }

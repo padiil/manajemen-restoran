@@ -9,7 +9,7 @@ export class AuthService {
     constructor(
         private readonly karyawanService: KaryawanService,
         private readonly jwtService: JwtService,
-    ) {}
+    ) { }
 
     async register(createKaryawanDto: CreateKaryawanDto): Promise<any> {
         // Implementasi logika pendaftaran karyawan (jika diperlukan)
@@ -31,10 +31,16 @@ export class AuthService {
         return null;
     }
 
-    async login(user: any): Promise<{ access_token: string }> {
+    async login(user: any): Promise<{ access_token: string; user: any }> {
         const payload = { sub: user.id, email: user.email, role: user.jabatan };
         return {
             access_token: await this.jwtService.signAsync(payload),
+            user: {
+                id: user.id,
+                email: user.email,
+                jabatan: user.jabatan,
+                nama: user.nama,
+            },
         };
     }
 }
