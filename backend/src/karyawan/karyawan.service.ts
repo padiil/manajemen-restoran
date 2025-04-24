@@ -30,6 +30,13 @@ export class KaryawanService {
     }
   }
 
+  async findByEmail(email: string) {
+    try {
+      return await this.prisma.karyawan.findUnique({ where: { email } });
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to retrieve karyawan by email');
+    }
+  }
 
   async findAll() {
     try {

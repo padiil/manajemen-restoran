@@ -9,9 +9,10 @@ import { PembayaranModule } from './pembayaran/pembayaran.module';
 import { LaporanModule } from './laporan/laporan.module';
 import { ResepModule } from './resep/resep.module';
 import { MenuModule } from './menu/menu.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [KaryawanModule, PrismaModule, PesananModule, StokModule, PembayaranModule, LaporanModule, ResepModule, MenuModule],
+  imports: [KaryawanModule, PrismaModule, PesananModule, StokModule, PembayaranModule, LaporanModule, ResepModule, MenuModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
