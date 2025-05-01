@@ -100,7 +100,7 @@
         navigationItems = [
           { path: "/kepala-toko/dashboard", label: "Dashboard", icon: <Home /> },
           { path: "/kepala-toko/karyawan", label: "Karyawan", icon: <User /> },
-          { path: "/kepala-toko/menu", label: "Laporan Menu", icon: <Boxes /> },
+          { path: "/kepala-toko/menu" , label: "Menu", icon: <List /> },
           { path: "/kepala-toko/laporan-resep", label: "Resep", icon: <Utensils /> },
           { path: "/kepala-toko/stok-bahan", label: "Stok Bahan", icon: <Boxes /> },
           { path: "/kepala-toko/laporan-keuangan", label: "Laporan Keuangan", icon: <FileText /> },
