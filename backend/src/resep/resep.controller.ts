@@ -10,10 +10,16 @@ import {
 import { ResepService } from './resep.service';
 import { CreateResepDto } from './dto/create-resep.dto';
 import { UpdateResepDto } from './dto/update-resep.dto';
+import { CreateResepArrayDto } from './dto/create.resep.array.dto';
 
 @Controller('resep')
 export class ResepController {
     constructor(private readonly resepService: ResepService) { }
+
+    @Post('/bulk')
+    async createBulk(@Body() createResepArrayDto: CreateResepArrayDto) {
+        return this.resepService.createBulk(createResepArrayDto.resep);
+    }
 
     @Post()
     async create(@Body() createResepDto: CreateResepDto) {

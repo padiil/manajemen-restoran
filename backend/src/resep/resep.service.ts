@@ -7,6 +7,20 @@ import { UpdateResepDto } from './dto/update-resep.dto';
 export class ResepService {
     constructor(private readonly prisma: PrismaService) { }
 
+    async createBulk(resepArray: CreateResepDto[]) {
+        try {
+            return await this.prisma.$transaction(
+                resepArray.map((resep) =>
+                    this.prisma.resep.create({
+                        data: resep,
+                    }),
+                ),
+            );
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to create bulk resep');
+        }
+    }
+
     async create(createResepDto: CreateResepDto) {
         try {
             return await this.prisma.resep.create({
