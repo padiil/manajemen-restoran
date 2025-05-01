@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,7 +13,10 @@ import { MenuModule } from './menu/menu.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [KaryawanModule, PrismaModule, PesananModule, StokModule, PembayaranModule, LaporanModule, ResepModule, MenuModule, AuthModule],
+  imports: [ConfigModule.forRoot({
+    isGlobal: true,
+    envFilePath: '.env',
+  }), KaryawanModule, PrismaModule, PesananModule, StokModule, PembayaranModule, LaporanModule, ResepModule, MenuModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
