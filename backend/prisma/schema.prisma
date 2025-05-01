@@ -16,7 +16,6 @@ enum Jabatan {
 
 enum StatusPesanan {
   DIBUAT
-  DIMASAK
   SELESAI
   DIBAYAR
 }
@@ -129,6 +128,7 @@ model Pembayaran {
   pesanan   Pesanan  @relation(fields: [orderId], references: [id])
   metode    String
   jumlah    Float
+  kembalian Float?
   createdAt DateTime @default(now())
 
   @@map("pembayaran")

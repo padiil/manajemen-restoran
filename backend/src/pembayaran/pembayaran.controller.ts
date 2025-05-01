@@ -4,6 +4,7 @@ import {
     Post,
     Body,
     Param,
+    Delete,
 } from '@nestjs/common';
 import { PembayaranService } from './pembayaran.service';
 import { CreatePembayaranDto } from './dto/create-pembayaran.dto';
@@ -30,5 +31,10 @@ export class PembayaranController {
     @Get('/pesanan/:pesananId')
     async findByPesananId(@Param('pesananId') pesananId: string) {
         return this.pembayaranService.findByPesananId(pesananId);
+    }
+
+    @Delete(':id')
+    async remove(@Param('id') id: string) {
+        return this.pembayaranService.remove(id);
     }
 }
