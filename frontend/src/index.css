@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+/* Efek glow pada hover */
+.sidebar-glow:hover {
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100px) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.animate-fall {
+  animation: fall 1s ease-in-out forwards;
+}
+
