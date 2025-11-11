@@ -5,7 +5,6 @@ import { KaryawanModule } from '../karyawan/karyawan.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
